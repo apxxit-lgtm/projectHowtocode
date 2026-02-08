@@ -50,7 +50,8 @@ void employ() {
 
     if (orderCount == 0) {
         cout << "No orders yet" << endl;
-    } else {
+    }
+    else {
         for (int i = 0; i < orderCount; i++) {
             cout << i + 1 << ". " << orderList[i] << " - " << orderPrice[i] << " Baht" << endl;
         }
@@ -64,13 +65,15 @@ void menuu() {
         cout << "size : 1.normal 45 / 2.extra 55 " << endl;
         cout << "select size : "; cin >> size;
         food = "Khao man Gai";
-        price[menu] = (size == 1 ? 45 : 55);
+        if (size == 1) price[menu] = 45;
+        else price[menu] = 55;
     }
     else if (menu == 2) {
         cout << "size : 1.normal 45 / 2.extra 55 " << endl;
         cout << "select size : "; cin >> size;
         food = "Khao ka Moo";
-        price[menu] = (size == 1 ? 45 : 55);
+        if (size == 1) price[menu] = 45;
+        else price[menu] = 55;
     }
     else if (menu == 3) { food = "Wagyu A5"; price[menu] = 990; }
     else if (menu == 4) { food = "Salmon Sashimi"; price[menu] = 150; }
@@ -82,33 +85,48 @@ void menuu() {
         orderCount++;
         totalPrice += price[menu];
         cout << ">> Added : " << food << " - " << price[menu] << " Baht" << endl;
-    } else {
+    }
+    else {
         cout << "Invalid menu!" << endl;
     }
 }
 
 void selectTable() {
-    cout << "\n-----------------CUSTOMER-----------------" << endl;
-    cout << "Select Table (1-5): " << endl;
-    for (int i = 1; i <= 5; i++) cout << i << " : Table " << i << endl;
-    cout << ": ";
-    cin >> table;
+    while (true) {
+        if (table >= 1 && table <= 5) {
+            cout << "\n-----------------CUSTOMER-----------------" << endl;
+            cout << "Select Table (1-5): " << endl;
+            for (int i = 1; i <= 5; i++) cout << i << " : Table " << i << endl;
+            cout << "table : ";
+            cin >> table;
+            break;
+        }
+        else cout << "Invalid select table!";
+    }
 }
 
 void customer() {
-    if (table == 0) selectTable();
-    
-    cout << "\n-----------------MENU-----------------" << endl;
-    cout << "1. Khao man Gai (45/55)" << endl;
-    cout << "2. Khao ka Moo (45/55)" << endl;
-    cout << "3. Wagyu A5 (990)" << endl;
-    cout << "4. Salmon Sashimi (150)" << endl;
-    cout << "5. Tom Yum Kung (99)" << endl;
-    cout << "Select menu : ";
-    cin >> menu;
+        /*if (table == 0) {
+            selectTable();
+            break;
+        }*/
+    while (true) {
+        cout << "\n-----------------MENU-----------------" << endl;
+        cout << "1. Khao man Gai (45/55)" << endl;
+        cout << "2. Khao ka Moo (45/55)" << endl;
+        cout << "3. Wagyu A5 (990)" << endl;
+        cout << "4. Salmon Sashimi (150)" << endl;
+        cout << "5. Tom Yum Kung (99)" << endl;
+        cout << "Select menu : ";
+        cin >> menu;
 
-    menuu();
-    moree();
+        if (menu >= 1 && menu <= 5) {
+            menuu();
+            moree();
+            break;
+        }
+        else cout << "Invalid!! please choose again" << endl;
+    }
 }
 
 void moree() {
@@ -132,7 +150,17 @@ void showBill() {
 void summarize() { cout << "\n[System] Summarizing sales... OK\n"; }
 void checktable() { cout << "\n[System] Checking tables... OK\n"; }
 void checkfood() { cout << "\n[System] Checking food inventory... OK\n"; }
-void printbill() { cout << "\n[System] Printing last bill... OK\n"; }
+void printbill() { 
+    cout << "-------------------------------" << endl;
+    cout << "          benefits             " << endl;
+    cout << "          " << "table : " << table << "             " << endl;
+    cout << "-------------------------------" << endl;
+    cout << "Menu           " << "Qty          " << "Total price" << endl;
+    cout << orderList[0] << setw(6) << "___________" << setw(6) << orderPrice[0] << endl;
+    cout << orderList[1] << setw(6) << "___________" << setw(6) << orderPrice[1] << endl;
+
+
+}
 
 void Host() {
     int choose;
@@ -160,7 +188,11 @@ int main() {
         home();
 
         if (Num == 0) {
-            cout << "Exiting program... Goodbye!" << endl;
+            cout << endl;
+            cout << endl;
+            cout << "++++++++===================+++++++++" << endl;
+            cout << "|          Exiting program         |" << endl;
+            cout << "++++++++===================+++++++++" << endl;
             break;
         }
         else if (Num == 1) {
@@ -175,7 +207,8 @@ int main() {
                 if (password == "555") {
                     employ();
                     break;
-                } else {
+                }
+                else {
                     cout << "______wrong password!!!______" << endl;
                 }
             }
@@ -189,7 +222,8 @@ int main() {
                 if (password == "header") {
                     Host();
                     break;
-                } else {
+                }
+                else {
                     cout << "______wrong password!!!______" << endl;
                 }
             }
