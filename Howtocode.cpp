@@ -1,6 +1,7 @@
 #include<iostream>
 #include<string>
 #include<iomanip>
+//#include<windows.h>
 using namespace std;
 
 // Global variables
@@ -11,13 +12,16 @@ int price[6];
 int menu;
 int more;
 int amount;
+int check;
 int Amount[50]; // เก็บจำนวนของแต่ละรายการที่สั่ง
+int grandTotal = 0; // เก็บยอดขายสะสมทั้งวัน
 
 // เก็บออเดอร์โดยใช้ array
 string List[50];
 int orderPrice[50];
 int orderCount = 0;
 int totalPrice = 0;
+int useTable[6] = { 0 }; // แต่ละโต๊ะถูกใช้ไปกี่ครั้ง 
 
 // --- prototypes ---
 void home();
@@ -44,22 +48,35 @@ void home() {
     cout << " Please select : ";
     cin >> Num;
 }
+void func() {
+    cout << "----------------------------------------" << endl;
+    cout << "➤ 0 : back to home " << endl;
+    cout << "➤ 9 : Change Table" << endl;
+    cout << "----------------------------------------" << endl;
+}
 
 void employ() {
     cout << "\n-----------------EMPLOYEE-----------------" << endl;
-    cout << "Last Order Summary" << endl;
-    if (table == 0) cout << "Table : " << "free" << endl;
-    else cout << "Table : " << table << endl;
+    for (int i = 1; i <= 5; i++) {
+        cout << "infomation Table : " << i << endl;
+    }
+    cout << "Select : "; cin >> check;
 
-    if (orderCount == 0) {
-        cout << "No orders yet" << endl;
-    }
-    else {
-        for (int i = 0; i < orderCount; i++) {
-            cout << i + 1 << ". " << List[i] << "*" << amount << " - " << orderPrice[i] << " Baht" << endl;
-        }
-        cout << "Total price : " << totalPrice << " Baht" << endl;
-    }
+    /*/ cout << "Last Order Summary" << endl;
+     if (table == 0) cout << "Table : " << "free" << endl;
+     else cout << "Table : " << table << endl;
+
+     if (orderCount == 0) {
+         cout << "No orders yet" << endl;
+     }
+     else {
+         for (int i = 0; i < orderCount; i++) {
+             cout << i + 1 << ". " << List[i] << "*" << amount << " - " << orderPrice[i] << " Baht" << endl;
+         }
+         cout << "Total price : " << totalPrice << " Baht" << endl;
+     }
+ } */
+
 }
 
 void menuu() {
@@ -69,7 +86,8 @@ void menuu() {
     }
     else if (menu == 1) {
         cout << "size : 1.normal 45 / 2.extra 55 " << endl;
-        cout << "select size : "; cin >> size;
+        func();
+        cout << "Select size : "; cin >> size;
         food = "Khao man Gai";
         //price[menu] = (size == 1 ? 45 : 55);
         if (size == 1) price[menu] = 45;
@@ -77,7 +95,8 @@ void menuu() {
     }
     else if (menu == 2) {
         cout << "size : 1.normal 45 / 2.extra 55 " << endl;
-        cout << "select size : "; cin >> size;
+        func();
+        cout << "Select size : "; cin >> size;
         food = "Khao ka Moo";
         //price[menu] = (size == 1 ? 45 : 55);
         if (size == 1) price[menu] = 45;
@@ -94,15 +113,18 @@ void menuu() {
 
 void selectTable() {
     cout << "\n-----------------CUSTOMER-----------------" << endl;
-    cout << "0.back to home " << endl;
     cout << "Select Table (1-5): " << endl;
     for (int i = 1; i <= 5; i++) cout << i << " : Table " << i << endl;
-    cout << ": ";
+    cout << "----------------------------------------" << endl;
+    cout << "➤ 0 : back to home " << endl;
+    cout << "----------------------------------------" << endl;
+    cout << "Select Table : ";
     cin >> table;
-    if (table == 0) {
-        return;
+    if (table >= 1 && table <= 5) {
+        useTable[table]++; // เก็บสถิติว่าโต๊ะนี้ถูกใช้งานเพิ่ม 1 ครั้ง
     }
 }
+
 
 void customer() {
     while (true) {
@@ -113,15 +135,13 @@ void customer() {
         }
 
         cout << "\n-----------------MENU-----------------" << endl;
-        cout << "0.back to home " << endl;
-        cout << "9. Change Table" << endl;
-        cout << " " << endl;
         cout << "1. Khao man Gai (45/55)" << endl;
         cout << "2. Khao ka Moo (45/55)" << endl;
         cout << "3. Wagyu A5 (990)" << endl;
         cout << "4. Salmon Sashimi (150)" << endl;
         cout << "5. Tom Yum Kung (99)" << endl;
-        cout << ": "; cin >> menu;
+        func();
+        cout << "Select Menu : "; cin >> menu;
         menuu();
         if (menu == 0) return;
 
@@ -129,6 +149,7 @@ void customer() {
             selectTable();        // เลือกโต๊ะใหม่
             continue;            // กลับไปที่ customer() ใหม่;
         }
+
         cout << "amount : "; cin >> amount;
 
         if (menu >= 1 && menu <= 5) {
@@ -136,8 +157,14 @@ void customer() {
             orderPrice[orderCount] = price[menu];
             Amount[orderCount] = amount;   // บันทึกจำนวนของรายการนี้
 
+
+            totalPrice += (price[menu] * Amount[orderCount]);
+            grandTotal += (price[menu] * Amount[orderCount]); // สะสมยอดทั้งวันตรงนี้
+
             totalPrice += (price[menu] * Amount[orderCount]); // คำนวณราคารวมโดยคูณกับจำนวน ที่สั่ง
-            cout << ">> Added : " << food << " - " << price[menu] << " Baht" << endl;
+            cout << " " << endl;
+            cout << ">> Added : " << food << " - " << price[menu] << " Baht" << " <<" << endl;
+            cout << " " << endl;
             orderCount++;
         }
         else {
@@ -158,8 +185,9 @@ void customer() {
 
 int moree() {
     while (true) {
-        cout << "More order? 1.yes / 2.no : ";
-        cin >> more;
+        cout << "More order? 1.yes / 2.no  " << endl;
+        func();
+        cout << ": "; cin >> more;
 
         if (more == 1) {
             return 1; // กลับไป main → main เรียก customer() ใหม่เอง
@@ -168,8 +196,15 @@ int moree() {
             showBill();
             return 0;
         }
+        else if (more == 0) {
+            return 0; // กลับไป main
+        }
+        else if (more == 9) {
+            selectTable();        // เลือกโต๊ะใหม่
+            return 1;            // กลับไปที่ customer() ใหม่;
+        }
         else {
-            cout << "Invalid choice!" << endl;
+            cout << "Invalid!! please choose again" << endl;
         }
     }
 }
@@ -185,12 +220,39 @@ void showBill() {
 }
 
 //underconstruction >> FUNCTION OF HOST <<
-void summarize() { cout << "\n[System] Summarizing sales... OK\n"; }
-void checktable() {
-    cout << "---$$$ Today's amount table $$$---";
-    //for(int i = 0; i < )
-    //cout << table[i];
+void summarize() {
+    cout << "\n===========================================" << endl;
+    cout << "           DAILY BUSINESS SUMMARY          " << endl;
+    cout << "===========================================" << endl;
+
+    // 1. รายงานการใช้โต๊ะ
+    checktable();
+    cout << "-------------------------------------------" << endl;
+
+    // 2. รายงานเมนูที่ขายได้
+    checkfood();
+    cout << "-------------------------------------------" << endl;
+
+    // 3. สรุปรายได้รวมทั้งหมด
+    cout << " >> TOTAL REVENUE TODAY : " << grandTotal << " Baht <<" << endl;
+    cout << "===========================================\n" << endl;
 }
+
+void checktable() {
+    cout << "\n======= TABLE USAGE SUMMARY =======" << endl;
+    cout << setw(10) << "      Table No." << setw(20) << "      Times Used" << endl;
+    cout << "-----------------------------------" << endl;
+
+    int totalTable = 0;
+    for (int i = 1; i <= 5; i++) {
+        cout << setw(10) << i << setw(17) << useTable[i] << " times" << endl;
+        totalTable += useTable[i];
+    }
+
+    cout << "-----------------------------------" << endl;
+    cout << "Total Table used: " << totalTable << " times" << endl;
+}
+
 
 
 void checkfood() {
@@ -209,9 +271,10 @@ void printbill() {
     cout << "          benefits             " << endl;
     cout << "          " << "table : " << table << "             " << endl;
     cout << "-------------------------------" << endl;
-    cout << "Menu           " << "Qty          " << "Total price" << endl;
-    cout << List[0] << setw(6) << "___________" << setw(6) << orderPrice[0] << endl;
-    cout << List[1] << setw(6) << "___________" << setw(6) << orderPrice[1] << endl;
+    cout << "Menu" << " " << setw(15) << "Qty" << setw(15) << " " << "Total price" << endl;
+    for (int i = 0; i < orderCount; i++) {
+        cout << List[i] << " " << setw(15) << Amount[i] << " " << setw(15) << orderPrice[i] << endl;
+    }
 
 }
 void Host() {
@@ -236,15 +299,16 @@ void Host() {
 }
 
 int main() {
+    //SetConsoleOutputCP(CP_UTF8);
     while (true) {
         home();
 
         if (Num == 0) {
             cout << endl;
             cout << endl;
-            cout << "++++++++===================+++++++++" << endl;
-            cout << "|          Exiting program         |" << endl;
-            cout << "++++++++===================+++++++++" << endl;
+            cout << "++++++++=======================+++++++++" << endl;
+            cout << "|            Exiting program           |" << endl;
+            cout << "++++++++=======================+++++++++" << endl;
             break;
         }
         else if (Num == 1) {
