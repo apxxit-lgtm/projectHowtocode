@@ -7,25 +7,26 @@ using namespace std;
 
 //================= โครงสร้างข้อมูลต่อโต๊ะ =================
 struct TableOrder {
-    vector<string> List;   // เปลี่ยนเป็น vector
-    vector<int> Price;    // เปลี่ยนเป็น vector
-    vector<int> Amount;   // เปลี่ยนเป็น vector
+    vector<string> List;   
+    vector<int> Price;    
+    vector<int> Amount;   
     int count = 0;
     int total = 0;
 };
 
-TableOrder tables[6];      // โต๊ะ 1-5 ใช้จริง
+//TableOrder tables[6];  <-- อันนี้คือเวอร์ชันเก่านะ   
+vector<TableOrder> tables(6); // โต๊ะ 1-5 ใช้จริง
 
 //================= Global variables =================
 string food;
 int Num;
 int table = 0;
-int price[6];
 int menu;
 int more;
 int amount;
 int check;
 
+vector<int> price(6, 0);
 vector<int> useTable(6, 0);
 
 //================= prototypes =================
