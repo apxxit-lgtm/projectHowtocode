@@ -18,9 +18,9 @@ struct MenuItem {
 
 //================= โครงสร้างข้อมูลต่อโต๊ะ =================
 struct TableOrder {
-    vector<string> List;   // เปลี่ยนเป็น vector
-    vector<int> Price;    // เปลี่ยนเป็น vector
-    vector<int> Amount;   // เปลี่ยนเป็น vector
+    vector<string> List;  
+    vector<int> Price;    
+    vector<int> Amount;   
     int count = 0;
     int total = 0;
 };
@@ -103,9 +103,9 @@ void selectTable() {
 
         if (!(cin >> table)) {
             cout << "\n---------- PLEASE ENTER NUMBERS ONLY ----------" << endl;
-            cin.clear(); // ล้าง error 
+            cin.clear(); // ล้าง error เละๆ
             cin.ignore(1000, '\n'); // ลบขยะที่พิมมา 
-            continue; // กลับไปเริ่มใหม่ 
+            continue; // กลับไปเริ่มใหม่ซะ
         }
 
         if (table >= 1 && table <= 5) {
@@ -120,61 +120,6 @@ void selectTable() {
         }
     }
 }
-
-
-/*void customer() {
-    while (true) {
-        if (table == 0) {
-            selectTable();
-            if (table == 0) return;
-        }
-        cout << endl << endl << endl;
-        cout << "========================================" << endl;
-        cout << "            ORDER CATEGORIES            " << endl;
-        cout << "========================================" << endl;
-        cout << "[1] RECOMMENDED MENU " << endl;
-        cout << "[2] MAIN COURSES" << endl;
-        cout << "[3] BEVERAGES" << endl;
-        cout << "[4] DESSERTS" << endl;
-        cout << "----------------------------------------" << endl;
-        cout << "[0] HOME     |   [9] CHANGE TABLE " << endl;
-        cout << "----------------------------------------" << endl;
-        cout << "SELECT MENU >> ";
-        cin >> menu;
-
-
-        if (menu == 0) return;
-        if (menu == 9) {
-            selectTable();
-            continue;
-        }
-
-
-        menuu();
-
-        cout << "AMOUNT >>  ";
-        cin >> amount;
-
-        if (menu >= 1 && menu <= 4) {
-            // ใช้ push_back เพื่อเพิ่มข้อมูลลงใน vector
-            tables[table].List.push_back(food);
-            tables[table].Price.push_back(price[menu]);
-            tables[table].Amount.push_back(amount);
-
-            tables[table].total += price[menu] * amount;
-
-            cout << endl;
-            cout << ">> ADDED : " << food << " x" << amount
-                << " - " << price[menu] * amount << " BAHT <<" << endl;
-            cout << endl;
-            tables[table].count++;
-        }
-
-        int result = moree();
-        if (result == 0) return;
-    }
-}
-*/
 
 void customer() {
     while (true) {
@@ -196,7 +141,7 @@ void customer() {
         cout << "----------------------------------------" << endl;
         cout << "SELECT MENU >> ";
 
-        // --- ส่วนป้องกัน Error จากการพิมพ์ตัวอักษร ---
+        // --- ดัก Error ---
         if (!(cin >> menu)) {
             cout << ">>> INVALID INPUT! Please enter numbers. <<<" << endl;
             cin.clear();
@@ -206,21 +151,21 @@ void customer() {
 
         if (menu == 0) return;
         if (menu == 9) {
-            table = 0; // Reset โต๊ะเพื่อให้เรียก selectTable ใหม่
+            table = 0; // Resetโต๊ะ เรียก selectTable ใหม่
             continue;
         }
 
         if (menu >= 1 && menu <= 4) {
-            menuu(); // เข้าไปเลือกอาหารและราคา
+            menuu(); 
 
             cout << "AMOUNT >> ";
-            while (!(cin >> amount) || amount <= 0) { // เช็กจำนวนต้องเป็นตัวเลขและ > 0
+            while (!(cin >> amount) || amount <= 0) { 
                 cout << "INVALID AMOUNT! Please enter a valid number: ";
                 cin.clear();
                 cin.ignore(1000, '\n');
             }
 
-            // --- ส่วนบันทึกข้อมูล (ใช้ค่าล่าสุดจาก Global Variable) ---
+            // ส่วนบันทึกข้อมูล
             tables[table].List.push_back(food);
 
             // ใช้ price[menu] ที่ฟังก์ชัน menuu() เพิ่งตั้งค่าให้สดๆ ร้อนๆ
@@ -228,7 +173,7 @@ void customer() {
             tables[table].Price.push_back(current_item_price);
             tables[table].Amount.push_back(amount);
 
-            // คำนวณราคารวมของโต๊ะ
+            // คิดราคารวมของโต๊ะ
             tables[table].total += current_item_price * amount;
 
             cout << endl;
@@ -248,8 +193,8 @@ void customer() {
 int Helpercode(int min, int max) {
     int input;
     while (true) {
-        if (cin >> input && input >= min && input <= max) return input; 
-        
+        if (cin >> input && input >= min && input <= max) return input;
+
         cout << "INVALID: Please enter " << min << "-" << max << " only >> ";
         cin.clear();
         cin.ignore(1000, '\n');
@@ -325,13 +270,13 @@ void menuu() {
         cout << "SELECT MENU (1-2) >> ";
 
         item = Helpercode(1, 2); // ดักน้ำ 1-2
-        if (item == 1) { 
-            food = "WATER"; 
-            price[menu] = 10; 
+        if (item == 1) {
+            food = "WATER";
+            price[menu] = 10;
         }
-        else { 
-            food = "SOFT DRINK"; 
-            price[menu] = 20; 
+        else {
+            food = "SOFT DRINK";
+            price[menu] = 20;
         }
     }
     else if (menu == 4) {
@@ -342,12 +287,12 @@ void menuu() {
         cout << "SELECT MENU (1-2) >> ";
 
         item = Helpercode(1, 2); // ดักของหวาน 1-2
-        if (item == 1) { 
-            food = "ICE CREAM"; 
+        if (item == 1) {
+            food = "ICE CREAM";
             price[menu] = 15;
         }
         else {
-            food = "CAKE"; 
+            food = "CAKE";
             price[menu] = 30;
         }
     }
@@ -452,7 +397,7 @@ void Host() {
 
                 if (Numtable >= 1 && Numtable <= 5) {
                     payslip(Numtable);
-                    break;   // ออกจาก while เมื่อถูกต้อง
+                    break;  
                 }
                 else {
                     cout << "Invalid Table! Please try again." << endl;
@@ -632,11 +577,11 @@ int main() {
     loadData();
     while (true) {
         home();
-        if (cin.fail()) { //ตรวจสอบว่า cin เกิดข้อผิดพลาดหรือไม่ (เช่น รับค่าตัวอักษรเข้าตัวแปร int)
-            cin.clear(); //(เหมือนการกดปุ่ม Reset)
-            cin.ignore(1000, '\n'); //ล้างขยะใน Buffer: สั่งให้ข้ามตัวอักษรที่ค้างอยู่ในคีย์บอร์ดทิ้งไป 1,000 ตัว หรือจนกว่าจะเจอการขึ้นบรรทัดใหม่
+        if (cin.fail()) { //ดูว่า cin เกิดข้อผิดพลาดมั้ย
+            cin.clear(); //เหมือนการกดปุ่ม Reset
+            cin.ignore(1000, '\n'); //ล้างขยะใน Buffer
             cout << "Invalid input! Try again." << endl;
-            continue; //สั่งให้ข้ามคำสั่งที่เหลือในลูป และกลับไปเริ่มต้นที่หัวลูป while ใหม่ทันที
+            continue; 
         }
 
         if (Num == 0) {
